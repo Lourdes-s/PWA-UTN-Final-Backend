@@ -5,3 +5,5 @@ class UserLogin {
         this.password = password
     }
 }
+
+export default UserLogin
