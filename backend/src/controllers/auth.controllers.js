@@ -1,8 +1,8 @@
 import AppError from "../helpers/errors/app.error.js"
 import { verifyEmail, verifyMinLength, verifyString, verifyValidator } from "../helpers/validations.helpers.js"
 import bcrypt from "bcrypt"
-import UserLogin from "../model/userLogin.model.js"
 import UserRepository from "../repository/user.repository.js"
+import User from "../model/user.model.js"
 
 const validate = (name, password, email) => {
     const validator = {
@@ -40,7 +40,7 @@ export const registerController = async (req, res, next) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10)
-        UserRepository.saveUser(new UserLogin(name, email, hashedPassword))
+        const userId = await UserRepository.createUser(User.createUserLogin(name, email, hashedPassword, true, false))
 
         //send email de veificacion
 
