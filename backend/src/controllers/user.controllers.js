@@ -6,6 +6,11 @@ export const getUserController = async (req, res, next) => {
     try{
         const { id } = req.params
 
+        if (req.user.id != id) {
+            next(new AppError("User is not allow", 403))
+            return
+        }
+
         const user = await UserRepository.getUser(id)
         if(!user){
             next(new AppError("User not found", 404))
