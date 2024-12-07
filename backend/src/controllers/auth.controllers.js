@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken'
 import ENVIROMENT from "../config/eviroment.js"
 import { sendResgisterMail } from "../helpers/mail.helpers.js"
 
-const validate = (name, password, email) => {
+const validateRegister = (name, password, email) => {
     const validator = {
         name: {
             value: name,
@@ -34,33 +34,51 @@ const validate = (name, password, email) => {
     return verifyValidator(validator)
 }
 
+const validateLogin = (password, email) => {
+    const validator = {
+        password: {
+            value: password,
+            validation: [
+                verifyString,
+                (field_name, field_value) => verifyMinLength(field_name, field_value, 10)
+            ]
+        },
+        email: {
+            value: email,
+            validation: [
+                verifyEmail,
+                (field_name, field_value) => verifyMinLength(field_name, field_value, 10)
+            ]
+        }
+    }
+    return verifyValidator(validator)
+}
+
 export const registerController = async (req, res, next) => {
     try{
         const { name, password, email } = req.body
-        const errors = validate(name, password, email)
+        const errors = validateRegister(name, password, email)
         if (errors !== undefined) {
             next(new AppError(errors, 400))
+            return
         }
 
         const validationToken = jwt.sign({ email: email }, ENVIROMENT.SECRET_KEY, { expiresIn: '1d' })
         const result = await sendResgisterMail(validationToken, email)
 
         const hashedPassword = await bcrypt.hash(password, 10)
-        const userId = await UserRepository.createUser(User.createUserLogin(name, email, hashedPassword, true, false))
+        const userId = await UserRepository.createUser(User.createUserRegister(name, email, hashedPassword, true, false))
 
         return res.status(201).json({})
     }
     catch (err){
-        console.error(err)
-        res.sendStatus(500)
+        next(error)
     }
 }
 
-export const verifyEmailController = async (req, res) => {
+export const verifyEmailController = async (req, res, next) => {
     try {
         const { validation_token } = req.params
-        console.log(validation_token)
-
         const payload = jwt.verify(validation_token, ENVIROMENT.SECRET_KEY)
         const emailToVerify = payload.email
         const userToVerify = await UserRepository.getUserByEmail(emailToVerify)
@@ -70,7 +88,49 @@ export const verifyEmailController = async (req, res) => {
         res.redirect('http://localhost:5173/login')
     }
     catch (error) {
-        console.error(error)
-        res.sendStatus(500)
+        next(error)
     }
 }
+
+
+export const loginController = async (req, res, next) => {
+    try {
+        const { email, password } = req.body
+        const errors = validateLogin(password, email)
+        if (errors !== undefined) {
+            next(new AppError(errors, 400))
+            return
+        }
+
+        const user = await UserRepository.getUserByEmail(email)
+        if(!user){
+            next(new AppError("User not found", 404))
+            return
+        }
+
+        const isCorrectPassword = await bcrypt.compare(password, user.password)
+        if (!isCorrectPassword) {
+            next(new AppError("Incorrect password", 401))
+            return
+        }
+
+        
+        if (!user.verify_email) {
+            next(new AppError("User is not verify", 403))
+            return
+        }
+
+        const userPublic = User.createUserPublic(user)
+        const access_token = jwt.sign({ userPublic }, ENVIROMENT.SECRET_KEY, { expiresIn: '1d' })
+
+        return res.status(200).json({
+            access_token: access_token,
+            user: { userPublic }
+        })
+    }
+    catch (error) {
+        next(error)
+    }
+}
+
+

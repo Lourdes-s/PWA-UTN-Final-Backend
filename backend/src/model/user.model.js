@@ -9,8 +9,16 @@ class User {
         this.created_at = created_at 
     }
 
-    static createUserLogin(username, email, password, active, verify_email) {
+    static createUserRegister(username, email, password, active, verify_email) {
         return new User(null, username, email, password, active, verify_email, null)
+    }
+    
+    static createUserPublic(user) {
+        return {
+            id: user.id,
+            username: user.username,
+            email: user.email
+        }
     }
 }
 

@@ -16,9 +16,7 @@ class UserRepository {
             return UserMapper.mapUserFromSqlResult(rows[0])
         }
         else{
-            console.log('holi')
-            //Pueden manejar el error
-            //throw 
+            return undefined
         }
     }
 

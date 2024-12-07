@@ -2,7 +2,6 @@ import express from 'express'
 import cors from 'cors'
 import authRouter from './routes/auth.route.js'
 import errorHandlerMiddleware from './middlewares/errorHandler.middleware.js'
-import pool from './config/dbMySql.config.js'
 
 const PORT = 3000
 const app = express()
