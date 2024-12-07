@@ -71,7 +71,7 @@ export const registerController = async (req, res, next) => {
 
         return res.status(201).json({})
     }
-    catch (err){
+    catch (error){
         next(error)
     }
 }
