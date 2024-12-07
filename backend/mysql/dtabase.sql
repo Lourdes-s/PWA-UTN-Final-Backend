@@ -7,3 +7,25 @@ CREATE TABLE Users (
     verify_email BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
+
+CREATE TABLE Contacts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    user_id_contact INT NOT NULL,
+    active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id_contact) REFERENCES Users (id) ON DELETE CASCADE,
+    UNIQUE(user_id, user_id_contact)
+)
+
+CREATE TABLE Chats (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    issurer_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    content VARCHAR(255) NOT NULL,
+    active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (issurer_id) REFERENCES Users (id) ON DELETE CASCADE,
+    FOREIGN KEY (receiver_id) REFERENCES Users (id) ON DELETE CASCADE
+)
