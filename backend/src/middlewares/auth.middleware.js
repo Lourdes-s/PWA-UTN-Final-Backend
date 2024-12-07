@@ -21,7 +21,7 @@ const authMiddleware = (req, res, next) => {
     }
     catch (error) {
         console.error(error)
-        res.sendStatus(401).json({ message: 'El token de autorizacion esta malformado' })
+        res.status(401).json({ message: 'El token de autorizacion no es valido' })
     }
 }
 
