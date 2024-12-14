@@ -1,6 +1,6 @@
 import express from 'express'
-import { getChatController, getChatsController, postMessageController } from '../controllers/chat.controllers'
-import authMiddleware from '../middlewares/auth.middleware'
+import { getChatController, getChatsController, postMessageController } from '../controllers/chat.controllers.js'
+import authMiddleware from '../middlewares/auth.middleware.js'
 
 const chatRouter = express.Router()
 

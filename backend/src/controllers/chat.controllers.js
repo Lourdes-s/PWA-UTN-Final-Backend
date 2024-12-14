@@ -1,6 +1,6 @@
-import AppError from "../helpers/errors/app.error"
-import { verifyMaxLength, verifyString, verifyValidator } from "../helpers/validations.helpers"
-import ChatRepository from "../repository/chat.repository"
+import AppError from "../helpers/errors/app.error.js"
+import { verifyMaxLength, verifyString, verifyValidator } from "../helpers/validations.helpers.js"
+import ChatRepository from "../repository/chat.repository.js"
 
 export const getChatsController = async (req, res, next) => {
     try{

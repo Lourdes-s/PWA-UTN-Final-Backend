@@ -1,7 +1,7 @@
-import AppError from "../helpers/errors/app.error"
-import { verifyEmail, verifyMinLength, verifyValidator } from "../helpers/validations.helpers"
-import ContactRepository from "../repository/contact.repository"
-import UserRepository from "../repository/user.repository"
+import AppError from "../helpers/errors/app.error.js"
+import { verifyEmail, verifyMinLength, verifyValidator } from "../helpers/validations.helpers.js"
+import ContactRepository from "../repository/contact.repository.js"
+import UserRepository from "../repository/user.repository.js"
 
 export const getContactsController = async (req, res, next) => {
     try{
