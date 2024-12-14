@@ -27,6 +27,15 @@ export const verifyMinLength = (field_name, field_value, minLength) => {
     }
 }
 
+export const verifyMaxLength = (field_name, field_value, maxLength) => {
+    if(!(field_value.length <= maxLength)){
+        return {
+            error: 'MAX_LENGTH_VALIDATION',
+            message: field_name + ' debe tener como maximo ' + maxLength + ' caracteres',
+        }
+    }
+}
+
 export const verifyEmail = (field_name, field_value) => {
     if(!(emailRegex.test(field_value))){
         return {
