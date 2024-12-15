@@ -11,7 +11,6 @@ class ChatMapper {
     }
 
     static mapChatFromSqlResult(result, user_id) {
-        console.log(result)
         const isIssurer = result.i_id === user_id
         return new Chat(
             isIssurer ? result.r_username : result.i_username,
