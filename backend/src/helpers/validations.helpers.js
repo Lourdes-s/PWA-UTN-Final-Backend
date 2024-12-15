@@ -46,18 +46,22 @@ export const verifyEmail = (field_name, field_value) => {
 }
 
 export const verifyValidator = (validator) => {
-    const errors = []
+    const errorsPerField = {}
     for (let field_name in validator) {
+        const errors = []
         for (let validation of validator[field_name].validation) {
             let result = validation(field_name, validator[field_name].value)
             if (result) {
                 errors.push(result)
             }
         }
+        if (errors.length > 0) {
+            errorsPerField[field_name] = errors
+        }
     }
 
-    if (errors.length != 0) {
-        return errors
+    if (!!Object.keys(errorsPerField).length) {
+        return errorsPerField
     } 
     return undefined
 }
