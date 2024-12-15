@@ -13,13 +13,13 @@ class ChatRepository {
     static async getChats(user_id, page, per_page) {
         const query = `SELECT *
         FROM (
-            SELECT i.username as i_username, r.username as r_username, i.id as i_id, r.id as r_id,
+            SELECT i.username as i_username, r.username as r_username, i.id as i_id, r.id as r_id, IF(i.id < r.id, CONCAT(i.id, ',', r.id), CONCAT(r.id, ',', i.id)) as id,
                 FIRST_VALUE(c.content) OVER (PARTITION BY c.issurer_id, c.receiver_id  ORDER BY c.created_at DESC) AS content,
                 FIRST_VALUE(c.created_at) OVER (PARTITION BY c.issurer_id, c.receiver_id  ORDER BY c.created_at DESC) AS created_at
             FROM Chats as c INNER JOIN Users as i ON c.issurer_id = i.id INNER JOIN Users as r ON c.receiver_id = r.id 
             WHERE (c.issurer_id = ? OR c.receiver_id = ?) AND c.active = 1 
         ) as t
-        GROUP BY t.i_id, t.r_id 
+        GROUP BY id
         LIMIT ? OFFSET ?`
 
         const [rows] = await pool.execute(query, [user_id, user_id, per_page, page * per_page])
