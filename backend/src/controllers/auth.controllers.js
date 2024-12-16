@@ -133,4 +133,42 @@ export const loginController = async (req, res, next) => {
     }
 }
 
+export const forgotPasswordController = async (req, res, next) => {
+    try {
+        const { email } = req.body  
+        const user = await User.findOne({email: email})
+        if (!user) {
+            next(new AppError("User not found", 404))
+            return
+        }
+        const reset_token = jwt.sign(
+            {
+                email: email
+            },
+            ENVIROMENT.SECRET_KEY,
+            {
+                expiresIn: '1d'
+            }
+        )
+
+        const resetUrl = `${ENVIROMENT.URL_FRONTEND}/auth/recovery-password/${reset_token}`
+
+        await transporterEmail.sendMail({
+            subject: 'Restablecer contraseña',
+            to: email,
+            html: `
+                <h1>Para poder restablecer tu contraseña ha click <a href='${resetUrl}'> aqui </a></h1>
+            `
+        })
+
+        return res.status(200).json({
+            ok: true,
+            message: 'El correo electronico ha sido enviado'
+        })
+
+    }
+    catch (error) {
+        next(error)
+    }
+}
 

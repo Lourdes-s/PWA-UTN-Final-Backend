@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Form } from '../../Components'
 
 const LoginScreen = () => {
-    const [error, setError] = useState({
+    
+    const [errorState, setError] = useState({
         email: undefined,
         password: undefined
     })
@@ -74,9 +75,10 @@ const LoginScreen = () => {
     return (
         <div>
             <h1>Inicia Sesion</h1>
-            <Form form_fields={form_fields} action={handleLogin} initial_state_form={initial_state_form} error={error}>
+            <Form form_fields={form_fields} action={handleLogin} initial_state_form={initial_state_form} error={errorState}>
                 <button type='submit'>Iniciar Sesion</button>
             </Form>
+            <Link to='/forgot-password'>Olvide mi contraseña</Link>
         </div>
     )
 }
