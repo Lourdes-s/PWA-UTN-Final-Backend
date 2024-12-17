@@ -11,7 +11,7 @@ const LoginScreen = () => {
 
     const form_fields = [
         {
-            label_text: 'Ingresa el email:',
+            label_text: 'Email:',
             field_component: 'INPUT',
             field_container_props: {
                 className: 'row_field'
@@ -24,7 +24,7 @@ const LoginScreen = () => {
             }
         },
         {
-            label_text: 'Ingresa la contraseña:',
+            label_text: 'Contraseña:',
             field_component: 'INPUT',
             field_container_props: {
                 className: 'row_field'
@@ -63,7 +63,7 @@ const LoginScreen = () => {
                 break;
             case 401:
             case 403:
-                setError({password: [{message:"email o contrasena incorrecto"}]})
+                setError({password: [{message:"email o contraseña incorrecto"}]})
                 break;
             case 200:
                 sessionStorage.setItem('access-token', data.access_token)
