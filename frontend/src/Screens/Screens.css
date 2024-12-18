@@ -1,0 +1,46 @@
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+}
+
+body {
+    background-color: #f8cde1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+}
+
+.phone {
+    /* del app */
+    height: 95vh;
+    width: 320px;
+    border-radius: 5px;
+    border: 3px solid #f1b2d7;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    justify-content: space-between;
+}
+
+/* -------------------------------------------------------------MEDIAQUERIES------------------------------------------------------------- */
+
+@media (min-width: 768px) {
+    .phone {
+        width: 500px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .phone {
+        width: 700px;
+    }
+}
+
+@media (min-width: 2000px) {
+    .phone {
+        width: 1000px;
+    }
+}

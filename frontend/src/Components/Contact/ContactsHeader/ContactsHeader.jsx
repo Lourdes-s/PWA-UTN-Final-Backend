@@ -1,34 +1,10 @@
-/* import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import './ContactsHeader.css'
 
 const ContactsHeader = ({setListaContactos}) => {
 
     const [searchStringState, setSearchString] = useState('')
 
-    useEffect(
-        () => {
-            setTimeout(
-                () => {
-                    obtenerContactos()
-                        .then(
-                            (contacts) => {
-                                if (searchStringState) {
-                                    const newContactsList = contacts.filter(
-                                        contact =>
-                                            contact.nombre.toLowerCase().includes(searchStringState.toLocaleLowerCase())
-                                    )
-                                    setListaContactos(newContactsList)
-                                }
-                                else {
-                                    setListaContactos(contacts)
-                                }
-                            }
-                        )
-                },
-                500
-            )
-        },
-        [searchStringState]
-    )
 
     const handleChangeValue = (e) => {
         setSearchString(e.target.value)
@@ -50,4 +26,3 @@ const ContactsHeader = ({setListaContactos}) => {
 }
 
 export default ContactsHeader
- */
